@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerala Migrant Health Record System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .login-title {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .header-left p {
+            color: #666;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Content Area */
+        .content-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-title {
+            color: #333;
+            font-size: 1.3em;
+            margin: 0;
+        }
+
+        /* Patient Profile */
+        .patient-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        .info-value {
+            color: #333;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        /* Forms */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .patient-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Color coding for different roles */
+        .patient-role { --primary-color: #28a745; }
+        .doctor-role { --primary-color: #007bff; }
+        .staff-role { --primary-color: #ffc107; }
+
+        .patient-role .stat-card:nth-child(1) .stat-icon { color: #28a745; }
+        .doctor-role .stat-card:nth-child(1) .stat-icon { color: #007bff; }
+        .staff-role .stat-card:nth-child(1) .stat-icon { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h2 class="login-title">Kerala Migrant Health System</h2>
+            
+            <div class="role-selector">
+                <button class="role-btn active" data-role="patient">Patient</button>
+                <button class="role-btn" data-role="doctor">Doctor</button>
+                <button class="role-btn" data-role="staff">Staff</button>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="userId">User ID</label>
+                    <input type="text" id="userId" class="form-control" placeholder="Enter your ID" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            
+            <div style="margin-top: 20px; font-size: 0.9em; color: #666;">
+                <strong>Demo Credentials:</strong><br>
+                Patient: ID: P001, Pass: patient123<br>
+                Doctor: ID: D001, Pass: doctor123<br>
+                Staff: ID: S001, Pass: staff123
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <h1>Kerala Health Record System</h1>
+                    <p id="welcomeMessage">Welcome back!</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <strong id="userName">User Name</strong><br>
+                        <small id="userRole">Role</small>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div id="statsGrid" class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-number">1,245</div>
+                    <div class="stat-label">Total Registered Patients</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-eye" style="color: #ffc107;"></i></div>
+                    <div class="stat-number">89</div>
+                    <div class="stat-label">Under Surveillance</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-heart" style="color: #28a745;"></i></div>
+                    <div class="stat-number">1,098</div>
+                    <div class="stat-label">Good Health Status</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i></div>
+                    <div class="stat-number">58</div>
+                    <div class="stat-label">Active Health Alerts</div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Left Column -->
+                <div class="left-column">
+                    <!-- Patient Profile Card (Patient View) -->
+                    <div id="patientProfileCard" class="card hidden">
+                        <div class="card-header">
+                            <h3 class="card-title">My Health Profile</h3>
+                        </div>
+                        <div class="patient-info">
+                            <div class="info-item">
+                                <span class="info-label">Health ID</span>
+                                <span class="info-value">KL-MIG-001</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Full Name</span>
+                                <span class="info-value">Ram Kumar Singh</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Father's Name</span>
+                                <span class="info-value">Shyam Singh</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Phone Number</span>
+                                <span class="info-value">+91 9876543210</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Blood Group</span>
+                                <span class="info-value">B+</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">State</span>
+                                <span class="info-value">Bihar</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">District</span>
+                                <span class="info-value">Patna</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Current Address</span>
+                                <span class="info-value">Kochi, Ernakulam</span>
+                            </div>
+                        </div>
+                        
+                        <h4 style="margin-top: 25px; margin-bottom: 15px; color: #667eea;">Medical History</h4>
+                        <div class="info-item">
+                            <span class="info-label">Active Conditions</span>
+                            <span class="info-value">Hypertension (controlled)</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Chronic Conditions</span>
+                            <span class="info-value">None reported</span>
+                        </div>
+                    </div>
+
+                    <!-- Patient Management Card (Doctor/Staff View) -->
+                    <div id="patientManagementCard" class="card hidden">
+                        <div class="card-header">
+                            <h3 class="card-title">Patient Management</h3>
+                        </div>
+                        <div class="form-row">
+                            <input type="text" class="form-control" placeholder="Search Patient ID" id="searchPatient">
+                            <button class="btn btn-primary" onclick="searchPatient()">Search</button>
+                        </div>
+                        
+                        <div id="selectedPatientInfo" class="hidden" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <h5>Selected Patient: Ram Kumar Singh (KL-MIG-001)</h5>
+                            <div class="form-row" style="margin-top: 15px;">
+                                <select class="form-control" id="appointmentType">
+                                    <option>Regular Checkup</option>
+                                    <option>Follow-up</option>
+                                    <option>Emergency</option>
+                                </select>
+                                <input type="date" class="form-control" id="appointmentDate">
+                            </div>
+                            <button class="btn btn-success" onclick="scheduleAppointment()" style="margin-top: 10px;">Schedule Appointment</button>
+                        </div>
+                    </div>
+
+                    <!-- Medical Records Update (Doctor View) -->
+                    <div id="medicalUpdateCard" class="card hidden">
+                        <div class="card-header">
+                            <h3 class="card-title">Update Medical Records</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Patient ID</label>
+                            <input type="text" class="form-control" placeholder="Enter Patient ID" value="KL-MIG-001">
+                        </div>
+                        <div class="form-group">
+                            <label>Diagnosis</label>
+                            <textarea class="form-control" rows="3" placeholder="Enter diagnosis"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Prescription</label>
+                            <textarea class="form-control" rows="3" placeholder="Enter prescription details"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Vaccination Status</label>
+                                <select class="form-control">
+                                    <option>Up to date</option>
+                                    <option>Pending</option>
+                                    <option>Overdue</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Health Status</label>
+                                <select class="form-control">
+                                    <option>Good</option>
+                                    <option>Under Observation</option>
+                                    <option>Requires Attention</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">Update Records</button>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="right-column">
+                    <!-- Health Alerts -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Active Health Alerts - Kerala</h3>
+                        </div>
+                        <div class="alert alert-danger">
+                            <strong><i class="fas fa-exclamation-triangle"></i> High Priority</strong><br>
+                            Dengue fever outbreak reported in Ernakulam district. Enhanced surveillance required.
+                        </div>
+                        <div class="alert alert-warning">
+                            <strong><i class="fas fa-info-circle"></i> Medium Priority</strong><br>
+                            Seasonal flu vaccination drive ongoing. Ensure migrant workers are vaccinated.
+                        </div>
+                        <div class="alert alert-success">
+                            <strong><i class="fas fa-check-circle"></i> Information</strong><br>
+                            COVID-19 booster shots available at all primary health centers.
+                        </div>
+                    </div>
+
+                    <!-- Appointments/Activities -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title" id="appointmentCardTitle">My Appointments</h3>
+                        </div>
+                        
+                        <!-- Patient Appointments -->
+                        <div id="patientAppointments">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Doctor</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2025-09-25</td>
+                                        <td>10:00 AM</td>
+                                        <td>Dr. Priya Nair</td>
+                                        <td>Regular Checkup</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2025-10-02</td>
+                                        <td>2:30 PM</td>
+                                        <td>Dr. Rajesh Kumar</td>
+                                        <td>Follow-up</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Doctor/Staff Activities -->
+                        <div id="staffActivities" class="hidden">
+                            <div style="margin-bottom: 15px;">
+                                <strong>Today's Activities:</strong>
+                            </div>
+                            <div style="padding: 10px; background: #f8f9fa; border-radius: 6px; margin-bottom: 10px;">
+                                <strong>09:00 AM</strong> - Health screening for new migrants (15 pending)
+                            </div>
+                            <div style="padding: 10px; background: #f8f9fa; border-radius: 6px; margin-bottom: 10px;">
+                                <strong>11:30 AM</strong> - Follow-up appointments (8 scheduled)
+                            </div>
+                            <div style="padding: 10px; background: #f8f9fa; border-radius: 6px; margin-bottom: 10px;">
+                                <strong>02:00 PM</strong> - Vaccination drive coordination
+                            </div>
+                            <div style="padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                                <strong>04:00 PM</strong> - Data entry and record updates
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vaccination History (Patient View) -->
+                    <div id="vaccinationCard" class="card hidden">
+                        <div class="card-header">
+                            <h3 class="card-title">Vaccination History</h3>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Vaccine</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>COVID-19 (Dose 1)</td>
+                                    <td>2024-03-15</td>
+                                    <td><span style="color: #28a745;">✓ Complete</span></td>
+                                </tr>
+                                <tr>
+                                    <td>COVID-19 (Dose 2)</td>
+                                    <td>2024-04-12</td>
+                                    <td><span style="color: #28a745;">✓ Complete</span></td>
+                                </tr>
+                                <tr>
+                                    <td>COVID-19 (Booster)</td>
+                                    <td>2024-11-20</td>
+                                    <td><span style="color: #28a745;">✓ Complete</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Influenza</td>
+                                    <td>-</td>
+                                    <td><span style="color: #ffc107;">⚠ Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application state
+        let currentUser = null;
+        let selectedRole = 'patient';
+
+        // Demo user data
+        const users = {
+            'P001': { 
+                role: 'patient', 
+                name: 'Ram Kumar Singh', 
+                password: 'patient123',
+                healthId: 'KL-MIG-001',
+                fatherName: 'Shyam Singh',
+                phone: '+91 9876543210',
+                bloodGroup: 'B+',
+                state: 'Bihar',
+                district: 'Patna',
+                address: 'Kochi, Ernakulam',
+                conditions: 'Hypertension (controlled)',
+                chronic: 'None reported'
+            },
+            'D001': { 
+                role: 'doctor', 
+                name: 'Dr. Priya Nair', 
+                password: 'doctor123' 
+            },
+            'S001': { 
+                role: 'staff', 
+                name: 'Rajesh Kumar', 
+                password: 'staff123' 
+            }
+        };
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            setupEventListeners();
+            setTodayDate();
+        });
+
+        function setupEventListeners() {
+            console.log('Setting up event listeners...');
+            
+            // Role selection
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('Role selected:', this.dataset.role);
+                    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedRole = this.dataset.role;
+                });
+            });
+
+            // Login form
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    console.log('Login form submitted');
+                    e.preventDefault();
+                    handleLogin();
+                });
+            } else {
+                console.error('Login form not found');
+            }
+
+            // Also add click handler to login button as backup
+            const loginBtn = document.querySelector('.login-btn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function(e) {
+                    if (e.target.type !== 'submit') {
+                        e.preventDefault();
+                        handleLogin();
+                    }
+                });
+            }
+        }
+
+        function setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('appointmentDate');
+            if (dateInput) {
+                dateInput.value = today;
+            }
+        }
+
+        function handleLogin() {
+            console.log('handleLogin called');
+            const userId = document.getElementById('userId').value;
+            const password = document.getElementById('password').value;
+            
+            console.log('Login attempt:', { userId, selectedRole });
+
+            if (!userId || !password) {
+                alert('Please enter both User ID and Password');
+                return;
+            }
+
+            if (users[userId]) {
+                console.log('User found:', users[userId]);
+                if (users[userId].password === password) {
+                    if (users[userId].role === selectedRole) {
+                        console.log('Login successful');
+                        currentUser = users[userId];
+                        showDashboard();
+                    } else {
+                        alert(`Role mismatch! This user is a ${users[userId].role}, but you selected ${selectedRole}. Please select the correct role.`);
+                    }
+                } else {
+                    alert('Incorrect password. Please try again.');
+                }
+            } else {
+                alert('User ID not found. Please check your credentials.');
+            }
+        }
+
+        function showDashboard() {
+            console.log('Showing dashboard for:', currentUser);
+            
+            const loginScreen = document.getElementById('loginScreen');
+            const dashboard = document.getElementById('dashboard');
+            
+            if (loginScreen && dashboard) {
+                loginScreen.style.display = 'none';
+                dashboard.style.display = 'block';
+                
+                // Update header
+                const userName = document.getElementById('userName');
+                const userRole = document.getElementById('userRole');
+                const welcomeMessage = document.getElementById('welcomeMessage');
+                
+                if (userName) userName.textContent = currentUser.name;
+                if (userRole) userRole.textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+                if (welcomeMessage) welcomeMessage.textContent = `Welcome back, ${currentUser.name}!`;
+
+                // Add role-based styling
+                document.body.className = currentUser.role + '-role';
+
+                // Show role-specific content
+                showRoleSpecificContent();
+                
+                console.log('Dashboard shown successfully');
+            } else {
+                console.error('Dashboard elements not found');
+            }
+        }
+
+        function showRoleSpecificContent() {
+            // Hide all role-specific cards first
+            document.querySelectorAll('.card').forEach(card => {
+                if (card.id !== 'healthAlertsCard') { // Keep health alerts visible for all
+                    card.style.display = 'block';
+                }
+            });
+
+            switch (currentUser.role) {
+                case 'patient':
+                    showPatientView();
+                    break;
+                case 'doctor':
+                    showDoctorView();
+                    break;
+                case 'staff':
+                    showStaffView();
+                    break;
+            }
+        }
+
+        function showPatientView() {
+            // Show patient-specific cards
+            document.getElementById('patientProfileCard').classList.remove('hidden');
+            document.getElementById('vaccinationCard').classList.remove('hidden');
+            
+            // Hide admin stats for patients
+            document.getElementById('statsGrid').style.display = 'none';
+            
+            // Show patient appointments
+            document.getElementById('appointmentCardTitle').textContent = 'My Appointments';
+            document.getElementById('patientAppointments').style.display = 'block';
+            document.getElementById('staffActivities').classList.add('hidden');
+            
+            // Hide management cards
+            document.getElementById('patientManagementCard').classList.add('hidden');
+            document.getElementById('medicalUpdateCard').classList.add('hidden');
+        }
+
+        function showDoctorView() {
+            // Show doctor-specific cards
+            document.getElementById('patientManagementCard').classList.remove('hidden');
+            document.getElementById('medicalUpdateCard').classList.remove('hidden');
+            
+            // Show stats
+            document.getElementById('statsGrid').style.display = 'grid';
+            
+            // Show activities instead of appointments
+            document.getElementById('appointmentCardTitle').textContent = 'Today\'s Schedule';
+            document.getElementById('patientAppointments').style.display = 'none';
+            document.getElementById('staffActivities').classList.remove('hidden');
+            
+            // Hide patient-specific cards
+            document.getElementById('patientProfileCard').classList.add('hidden');
+            document.getElementById('vaccinationCard').classList.add('hidden');
+        }
+
+        function showStaffView() {
+            // Show staff-specific cards (similar to doctor but with different permissions)
+            document.getElementById('patientManagementCard').classList.remove('hidden');
+            
+            // Show stats
+            document.getElementById('statsGrid').style.display = 'grid';
+            
+            // Show activities
+            document.getElementById('appointmentCardTitle').textContent = 'Today\'s Tasks';
+            document.getElementById('patientAppointments').style.display = 'none';
+            document.getElementById('staffActivities').classList.remove('hidden');
+            
+            // Hide patient-specific cards
+            document.getElementById('patientProfileCard').classList.add('hidden');
+            document.getElementById('vaccinationCard').classList.add('hidden');
+            
+            // Hide medical update (staff can't update medical records)
+            document.getElementById('medicalUpdateCard').classList.add('hidden');
+        }
+
+        function searchPatient() {
+            const searchTerm = document.getElementById('searchPatient').value;
+            if (searchTerm.trim()) {
+                // Simulate patient search
+                document.getElementById('selectedPatientInfo').classList.remove('hidden');
+                showNotification('Patient found and selected!', 'success');
+            } else {
+                alert('Please enter a Patient ID to search.');
+            }
+        }
+
+        function scheduleAppointment() {
+            const appointmentType = document.getElementById('appointmentType').value;
+            const appointmentDate = document.getElementById('appointmentDate').value;
+            
+            if (appointmentDate) {
+                showNotification(`Appointment scheduled successfully for ${appointmentDate}`, 'success');
+                // In a real system, this would save to database
+            } else {
+                alert('Please select a date for the appointment.');
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                ${message}
+            `;
+            
+            // Style the notification
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'warning' ? '#ffc107' : '#007bff'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: slideInRight 0.3s ease-out;
+            `;
+            
+            // Add animation styles
+            if (!document.querySelector('#notificationStyles')) {
+                const style = document.createElement('style');
+                style.id = 'notificationStyles';
+                style.textContent = `
+                    @keyframes slideInRight {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOutRight {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-in';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                selectedRole = 'patient';
+                
+                // Reset form
+                document.getElementById('loginForm').reset();
+                document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.role-btn[data-role="patient"]').classList.add('active');
+                
+                // Show login screen
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('loginScreen').style.display = 'flex';
+                
+                // Reset body class
+                document.body.className = '';
+            }
+        }
+
+        // Simulated real-time updates
+        function updateStats() {
+            // Simulate changing statistics
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const currentValue = parseInt(stat.textContent.replace(',', ''));
+                const change = Math.floor(Math.random() * 5) - 2; // Random change between -2 and +2
+                const newValue = Math.max(0, currentValue + change);
+                stat.textContent = newValue.toLocaleString();
+            });
+        }
+
+        // Update stats every 30 seconds for demo purposes
+        setInterval(updateStats, 30000);
+
+        // Additional utility functions
+        function generateHealthId() {
+            const prefix = 'KL-MIG-';
+            const number = Math.floor(Math.random() * 9000) + 1000;
+            return prefix + number;
+        }
+
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function validatePhone(phone) {
+            const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+            return phoneRegex.test(phone.replace(/\s/g, ''));
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Enhanced form validation
+        function validateForm(formData) {
+            const errors = [];
+            
+            if (!formData.name || formData.name.length < 2) {
+                errors.push('Name must be at least 2 characters long');
+            }
+            
+            if (formData.phone && !validatePhone(formData.phone)) {
+                errors.push('Please enter a valid phone number');
+            }
+            
+            if (formData.email && !validateEmail(formData.email)) {
+                errors.push('Please enter a valid email address');
+            }
+            
+            return errors;
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + L for logout
+            if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault();
+                logout();
+            }
+            
+            // Escape key to close modals/forms
+            if (e.key === 'Escape') {
+                // Close any open modals or reset forms
+                const selectedPatientInfo = document.getElementById('selectedPatientInfo');
+                if (selectedPatientInfo && !selectedPatientInfo.classList.contains('hidden')) {
+                    selectedPatientInfo.classList.add('hidden');
+                }
+            }
+        });
+
+        // Print functionality
+        function printHealthRecord() {
+            window.print();
+        }
+
+        // Export functionality (mock)
+        function exportData(format = 'csv') {
+            showNotification(`Exporting data as ${format.toUpperCase()}...`, 'info');
+            // In real implementation, this would generate and download the file
+        }
+
+        // Add some interactivity to cards
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for interactive elements
+            document.querySelectorAll('.data-table tbody tr').forEach(row => {
+                row.addEventListener('click', function() {
+                    // Highlight selected row
+                    document.querySelectorAll('.data-table tbody tr').forEach(r => r.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+        });
+
+        // Add CSS for selected row
+        const additionalStyles = `
+            .data-table tbody tr.selected {
+                background-color: #e3f2fd !important;
+            }
+            .data-table tbody tr:hover {
+                background-color: #f5f5f5;
+                cursor: pointer;
+            }
+            .notification {
+                font-size: 14px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+        `;
+        
+        // Add the additional styles to head
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = additionalStyles;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>

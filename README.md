@@ -19,7 +19,7 @@ Responsive Design - Works on all devices
 
 Clone the repository:
 
-bash   git clone https://github.com/yourusername/kerala-health-system.git
+bash   git clone https://github.com/231b313-shivam/SIH.git
 
 Open index.html in your browser
 Login with demo credentials:
